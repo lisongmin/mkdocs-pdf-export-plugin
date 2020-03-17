@@ -15,6 +15,7 @@ setup(
     license='MIT',
     python_requires='>=3.5',
     install_requires=[
+        'python-slugify>=4.0.0',
         'mkdocs>=0.17',
         'weasyprint>=0.44',
         'beautifulsoup4>=4.6.3'

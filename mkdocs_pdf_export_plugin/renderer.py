@@ -11,9 +11,10 @@ from .preprocessor import get_separate as prep_separate, get_combined as prep_co
 
 
 class Renderer(object):
-    def __init__(self, combined: bool, theme: str, theme_handler_path: str = None):
+    def __init__(self, combined: bool, theme: str, theme_handler_path: str = None, slugify=False):
         self.theme = self._load_theme_handler(theme, theme_handler_path)
         self.combined = combined
+        self._slugify = slugify
         self.page_order = []
         self.pgnum = 0
         self.pages = []
@@ -34,9 +35,9 @@ class Renderer(object):
             soup.head.append(style_tag)
 
         if self.combined:
-            soup = prep_combined(soup, base_url, rel_url)
+            soup = prep_combined(soup, base_url, rel_url, self._slugify)
         else:
-            soup = prep_separate(soup, base_url)
+            soup = prep_separate(soup, base_url, self._slugify)
 
         return soup
 

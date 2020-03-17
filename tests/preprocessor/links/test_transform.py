@@ -1,6 +1,8 @@
 #!/usr/bin/env python
+# coding=utf-8
 
-from mkdocs_pdf_export_plugin.preprocessor.links.transform import transform_href
+from mkdocs_pdf_export_plugin.preprocessor.links.transform \
+    import transform_href, transform_id
 
 
 def test_transform_href():
@@ -42,3 +44,18 @@ def test_transform_href():
     assert transform_href("index.md#fnref:@#$%",
                           "a/b/") == "#a/b/index:fnref:@#$%"
     assert transform_href("#fnref:@#$%", "a/b/") == "#a/b/:fnref:@#$%"
+    # test slugify
+    assert transform_href("#测试", "a/b/", True) == "#a/b/:ce-shi"
+    assert transform_href("#测试", "a/b/") == "#a/b/:测试"
+
+
+def test_transform_id():
+    assert transform_id("id", "a/b/") == "a/b/:id"
+
+    assert transform_id("id", "a/b") == "a/b:id"
+    assert transform_id("id", "a/b/c.html") == "a/b/c:id"
+    assert transform_id("id", "a/b/c.d.html") == "a/b/c.d:id"
+
+    # test slugify
+    assert transform_id("测试", "a/b/", True) == "a/b/:ce-shi"
+    assert transform_id("测试", "a/b/") == "a/b/:测试"

@@ -1,9 +1,10 @@
 import os
 
 from .util import is_doc, normalize_href
+from slugify import slugify
 
 
-def transform_href(href: str, rel_url: str):
+def transform_href(href: str, rel_url: str, should_slugify=False):
     # normalize href to #foo/bar/section:id
     head, tail = os.path.split(href)
     section = ''
@@ -28,16 +29,22 @@ def transform_href(href: str, rel_url: str):
 
         return '#{}{}:'.format(head, tail)
 
+    if should_slugify:
+        id = slugify(id)
+
     return '#{}{}:{}'.format(head, section, id)
 
 # normalize id to foo/bar/section:id
 
 
-def transform_id(id: str, rel_url: str):
+def transform_id(id: str, rel_url: str, should_slugify=False):
     head, tail = os.path.split(rel_url)
     section, _ = os.path.splitext(tail)
 
     if len(head) > 0:
         head += '/'
+
+    if should_slugify:
+        id = slugify(id)
 
     return '{}{}:{}'.format(head, section, id)
