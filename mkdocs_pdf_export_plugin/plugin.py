@@ -6,6 +6,7 @@ from mkdocs.config import config_options
 from mkdocs.plugins import BasePlugin
 from mkdocs import utils
 
+
 class PdfExportPlugin(BasePlugin):
 
     DEFAULT_MEDIA_TYPE = 'print'
@@ -16,7 +17,8 @@ class PdfExportPlugin(BasePlugin):
         ('enabled_if_env', config_options.Type(str)),
         ('combined', config_options.Type(bool, default=False)),
         ('combined_output_path', config_options.Type(str, default="pdf/combined.pdf")),
-        ('theme_handler_path', config_options.Type(str))
+        ('theme_handler_path', config_options.Type(str)),
+        ('slugify', config_options.Type(bool, default=False))
     )
 
     def __init__(self):
@@ -41,7 +43,10 @@ class PdfExportPlugin(BasePlugin):
             print('Combined PDF export is enabled')
 
         from .renderer import Renderer
-        self.renderer = Renderer(self.combined, config['theme'].name, self.config['theme_handler_path'])
+        self.renderer = Renderer(
+            self.combined, config['theme'].name,
+            self.config['theme_handler_path'],
+            self.config['slugify'])
 
         from weasyprint.logger import LOGGER
         import logging
