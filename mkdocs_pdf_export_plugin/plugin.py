@@ -17,6 +17,7 @@ class PdfExportPlugin(BasePlugin):
         ('combined', config_options.Type(bool, default=False)),
         ('combined_output_path', config_options.Type(str, default="pdf/combined.pdf")),
         ('theme_handler_path', config_options.Type(str)),
+        ('debug', config_options.Type(bool, default=False)),
         ('slugify', config_options.Type(bool, default=False))
     )
 
@@ -45,7 +46,8 @@ class PdfExportPlugin(BasePlugin):
         self.renderer = Renderer(
             self.combined, config['theme'].name,
             self.config['theme_handler_path'],
-            self.config['slugify'])
+            self.config['slugify'],
+            self.config['debug'])
 
         from weasyprint.logger import LOGGER
         import logging

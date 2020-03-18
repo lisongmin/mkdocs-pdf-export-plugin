@@ -96,6 +96,11 @@ project-root
 .
 ```
 
+### `debug`
+
+This option will output `.pdf.html` files with css hacked, so you can debug style problem more easily.
+default is `false`. **Do not enable it in product**.
+
 ## Adjusting the output
 
 The resulting PDF can be customized easily by adding a custom stylesheet such as the following:

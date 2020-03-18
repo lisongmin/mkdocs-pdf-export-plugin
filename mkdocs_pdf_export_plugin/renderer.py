@@ -11,16 +11,21 @@ from .preprocessor import get_separate as prep_separate, get_combined as prep_co
 
 
 class Renderer(object):
-    def __init__(self, combined: bool, theme: str, theme_handler_path: str = None, slugify=False):
+    def __init__(self, combined: bool, theme: str, theme_handler_path: str = None, slugify=False, debug=False):
         self.theme = self._load_theme_handler(theme, theme_handler_path)
         self.combined = combined
         self._slugify = slugify
+        self._debug = debug
         self.page_order = []
         self.pgnum = 0
         self.pages = []
 
     def write_pdf(self, content: str, base_url: str, filename: str):
         soup = self.render_doc(content, base_url)
+        if self._debug:
+            with open(filename + '.html', 'w') as f:
+                f.write(str(soup))
+
         html = HTML(string=str(soup))
         html.render().write_pdf(filename)
 
@@ -61,6 +66,10 @@ class Renderer(object):
                 articles = soup.find_all('article')
                 if articles:
                     md_content.extend(articles)
+
+        if self._debug:
+            with open(output_path + '.html', 'w') as f:
+                f.write(str(soup_all))
 
         html = HTML(string=str(soup_all))
         html.render().write_pdf(output_path)
