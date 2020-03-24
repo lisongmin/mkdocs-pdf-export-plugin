@@ -10,6 +10,7 @@ def soup():
     return BeautifulSoup("""
 <h1 id="chapter-1">chapter</h1>
 <h2 id="section-1">chapter</h2>
+<a href="/md-skip" class="md-skip">md-skip</a>
 <a href="/abs/path">abs path test</a>
 <a href="https://url/abs/path">url abs path test</a>
 <a href="../rel/#path">rel path test</a>

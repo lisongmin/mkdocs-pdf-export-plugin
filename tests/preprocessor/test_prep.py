@@ -4,7 +4,7 @@
 import logging
 import pytest
 from mkdocs_pdf_export_plugin.preprocessor.prep \
-    import get_combined, get_separate
+    import get_combined, get_separate, remove_md_skip
 
 
 def test_get_combined(soup):
@@ -29,3 +29,10 @@ def test_get_seperate(soup):
     assert result.find(attrs={'href': 'https://url/abs/path'})
 
     assert result.find(attrs={'href': '../rel/#path'})
+
+
+def test_remove_md_skip(soup):
+    md_skip = soup.find("a", attrs={'class': 'md-skip'})
+    remove_md_skip(md_skip)
+
+    assert not soup.find_all("a", attrs={'class': 'md-skip'})

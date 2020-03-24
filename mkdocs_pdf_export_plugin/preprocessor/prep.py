@@ -12,6 +12,8 @@ def get_combined(soup: BeautifulSoup, base_url: str, rel_url: str, should_slugif
         id['id'] = transform_id(id['id'], rel_url, should_slugify)
 
     for a in soup.find_all('a', href=True):
+        remove_md_skip(a)
+
         if urls.url_is_absolute(a['href']) or os.path.isabs(a['href']):
             continue
 
@@ -39,7 +41,13 @@ def get_separate(soup: BeautifulSoup, base_url: str, should_slugify=False):
     # transforms all relative hrefs pointing to other html docs
     # into relative pdf hrefs
     for a in soup.find_all('a', href=True):
+        remove_md_skip(a)
         a['href'] = rel_pdf_href(a['href'])
 
     soup = replace_asset_hrefs(soup, base_url)
     return soup
+
+
+def remove_md_skip(anchor):
+    if 'md-skip' in anchor.get('class', []):
+        anchor.extract()
